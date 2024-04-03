@@ -2,7 +2,7 @@
 ############ Setup project and cmake
 # Minimum cmake requirement. We should require a quite recent
 # cmake for the dependency find macros etc. to be up to date.
-cmake_minimum_required (VERSION 2.8.8)
+cmake_minimum_required (VERSION 3.20)
 
 ############ Paths
 
@@ -28,6 +28,7 @@ set (WEBSOCKETPP_PATCH_VERSION 0)
 set (WEBSOCKETPP_VERSION ${WEBSOCKETPP_MAJOR_VERSION}.${WEBSOCKETPP_MINOR_VERSION}.${WEBSOCKETPP_PATCH_VERSION})
 
 if(POLICY CMP0048)
+  cmake_policy(SET CMP0048 NEW)
   cmake_policy(GET CMP0048 _version_policy)
 endif()
 
@@ -210,7 +211,7 @@ if (BUILD_TESTS OR BUILD_EXAMPLES)
 	endif ()
 
     if (NOT Boost_USE_STATIC_LIBS)
-        add_definitions (/DBOOST_TEST_DYN_LINK)
+        add_definitions (-DBOOST_TEST_DYN_LINK)
     endif ()
 
     set (Boost_FIND_REQUIRED TRUE)
@@ -219,7 +220,7 @@ if (BUILD_TESTS OR BUILD_EXAMPLES)
     set (Boost_USE_MULTITHREADED TRUE)
     set (Boost_ADDITIONAL_VERSIONS "1.39.0" "1.40.0" "1.41.0" "1.42.0" "1.43.0" "1.44.0" "1.46.1") # todo: someone who knows better spesify these!
 
-    find_package (Boost 1.39.0 COMPONENTS "${WEBSOCKETPP_BOOST_LIBS}")
+    find_package (Boost 1.39.0 COMPONENTS ${WEBSOCKETPP_BOOST_LIBS})
 
     if (Boost_FOUND)
         # Boost is a project wide global dependency.
